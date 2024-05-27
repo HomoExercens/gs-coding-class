@@ -109,18 +109,21 @@
                 padding: 20px;
             }
             h1 {
-                font-size: 1.2em;
+                font-size: 1.5em; /* 글씨 크기 증가 */
                 margin-bottom: 20px;
             }
             button {
-                font-size: 0.8em;
+                font-size: 1.2em; /* 글씨 크기 증가 */
                 padding: 14px;
             }
             h2, h3 {
-                font-size: 1em;
+                font-size: 1.5em; /* 글씨 크기 증가 */
             }
             p {
-                font-size: 0.9em;
+                font-size: 1.5em; /* 글씨 크기 증가 */
+            }
+            .reinvestment-info {
+                font-size: 1.2em; /* 글씨 크기 증가 */
             }
         }
         @media (max-width: 480px) {
@@ -128,18 +131,21 @@
                 padding: 15px;
             }
             h1 {
-                font-size: 1em;
+                font-size: 1.5em; /* 글씨 크기 증가 */
                 margin-bottom: 15px;
             }
             button {
-                font-size: 0.7em;
+                font-size: 1.2em; /* 글씨 크기 증가 */
                 padding: 12px;
             }
             h2, h3 {
-                font-size: 0.9em;
+                font-size: 1.5em; /* 글씨 크기 증가 */
             }
             p {
-                font-size: 0.8em;
+                font-size: 1.5em; /* 글씨 크기 증가 */
+            }
+            .reinvestment-info {
+                font-size: 1.2em; /* 글씨 크기 증가 */
             }
         }
     </style>
@@ -185,16 +191,16 @@
             <h2>설명</h2>
             <p><strong>시나리오 설명:</strong></p>
             <ul>
-                <li><strong>낙관적인 경우:</strong> 연평균 수익률 12%, 물가상승률 1.5%</li>
-                <li><strong>평균인 경우:</strong> 연평균 수익률 10%, 물가상승률 2%</li>
-                <li><strong>비관적인 경우:</strong> 연평균 수익률 7%, 물가상승률 3%</li>
+                <li><strong>낙관적인 경우:</strong> 연평균 수익률 10%, 물가상승률 2%</li>
+                <li><strong>평균인 경우:</strong> 연평균 수익률 8%, 물가상승률 3%</li>
+                <li><strong>비관적인 경우:</strong> 연평균 수익률 6%, 물가상승률 4%</li>
             </ul>
             <p><strong>기타사항:</strong></p>
             <ul>
-                <li>투자 수수료: 매월 투자 금액의 0.1%</li>
+                <li>초기 투자 수수료: 매월 투자 금액의 0.1%</li>
                 <li>배당금 수익률: 연간 1.5%, 분기별로 계산</li>
                 <li>배당금 세금: 배당금의 15%</li>
-                <li>배당금 재투자 수수료: 재투자 금액의 0.1%</li>
+                <li>재투자 수수료: 재투자 금액의 0.1%</li>
                 <li>이득 금액 산출 방법: (물가상승률 고려 현재 가치 - 투자 원금)</li>
             </ul>
             <p>예를 들어, 700,000원을 매월 투자하는 경우 초기 투자 수수료로 700원이 차감되고, 나머지 금액이 투자됩니다. 매 분기마다 배당금이 계산되고 세금과 재투자 수수료가 차감된 후 재투자됩니다.</p>
@@ -211,16 +217,16 @@
 
         const scenarios = {
             optimistic: {
-                annualReturnRate: 0.12,
-                inflationRate: 0.015
-            },
-            average: {
                 annualReturnRate: 0.10,
                 inflationRate: 0.02
             },
-            pessimistic: {
-                annualReturnRate: 0.07,
+            average: {
+                annualReturnRate: 0.08,
                 inflationRate: 0.03
+            },
+            pessimistic: {
+                annualReturnRate: 0.06,
+                inflationRate: 0.04
             }
         };
 
@@ -316,4 +322,3 @@
     </script>
 </body>
 </html>
-
