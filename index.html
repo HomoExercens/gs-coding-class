@@ -1,69 +1,258 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>경산시 온라인 코딩교실</title>
+    <title>S&P 500 투자 시뮬레이터</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5em; /* 기본 글자 크기 증가 */
+            padding: 0;
         }
         .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #2c3e50;
             text-align: center;
+            margin-bottom: 30px;
         }
-        .category {
-            margin-bottom: 60px; /* 간격 증가 */
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
         }
-        .category h2 {
-            margin-bottom: 20px; /* 제목 하단 간격 증가 */
-            color: #333;
-            font-size: 1.5em; /* 제목 크기 증가 */
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
-        .button {
-            display: inline-block;
-            margin: 10px; /* 버튼 간격 증가 */
-            padding: 15px 25px; /* 버튼 패딩 증가 */
-            background-color: #4CAF50;
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #1abc9c;
             color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1em; /* 버튼 글자 크기 증가 */
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        .button:hover {
-            background-color: #45a049;
+        button:hover {
+            background-color: #16a085;
+        }
+        h2 {
+            color: #34495e;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+        .scenario {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e8f6f3;
+            border-left: 5px solid #1abc9c;
+            border-radius: 4px;
+        }
+        .scenario h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+        .scenario:nth-child(2) {
+            background-color: #f3e8f6;
+            border-left: 5px solid #9b59b6;
+        }
+        .scenario:nth-child(3) {
+            background-color: #f6f3e8;
+            border-left: 5px solid #f39c12;
+        }
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .explanation {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-left: 5px solid #1abc9c;
+            border-radius: 4px;
+        }
+        .result-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .profit {
+            color: #e74c3c;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <div class="category">
-            <h2>월, 수 교육반</h2>
-            <a href="https://us02web.zoom.us/j/87836846232?pwd=NENkR09LNzFJb0UxS3dObTFmUks1QT09" class="button">1반</a>
-            <a href="https://us02web.zoom.us/j/85226796949?pwd=VGE1ZnhjaTBtRExNb0czeTVXRG16UT09" class="button">2반</a>
-            <a href="https://us02web.zoom.us/j/88155514766?pwd=Zm5zdnVDaXdtdmJld3ZVSzNtZXRLUT09" class="button">3반</a>
-            <a href="https://us02web.zoom.us/j/81586829521?pwd=V2Jpak1kenA3NElSQTNoVzBZdjV5dz09" class="button">4반</a>
-            <a href="https://us02web.zoom.us/j/85308217819?pwd=NWNVaEp3S0Z1Vkx4R3JrcUROeUNodz09" class="button">5반</a>
+        <h1>S&P 500 투자 시뮬레이터</h1>
+        <label for="monthlyInvestment">이번 달 투자 금액 (원):</label>
+        <input type="number" id="monthlyInvestment" value="700000"><br>
+        <button onclick="invest()">투자</button>
+
+        <div class="result-section">
+            <h2>결과</h2>
+            <div class="scenario">
+                <h3>낙관적인 경우</h3>
+                <p id="resultOptimistic">총 투자 가치: 0 원 (0개월째 투자 중)</p>
+                <p id="principalOptimistic">투자 원금: 0 원</p>
+                <p id="inflationAdjustedValueOptimistic">물가상승률 고려 현재 가치: 0 원</p>
+                <p id="profitOptimistic" class="profit">이득 금액: 0 원</p>
+            </div>
+
+            <div class="scenario">
+                <h3>평균인 경우</h3>
+                <p id="resultAverage">총 투자 가치: 0 원 (0개월째 투자 중)</p>
+                <p id="principalAverage">투자 원금: 0 원</p>
+                <p id="inflationAdjustedValueAverage">물가상승률 고려 현재 가치: 0 원</p>
+                <p id="profitAverage" class="profit">이득 금액: 0 원</p>
+            </div>
+
+            <div class="scenario">
+                <h3>비관적인 경우</h3>
+                <p id="resultPessimistic">총 투자 가치: 0 원 (0개월째 투자 중)</p>
+                <p id="principalPessimistic">투자 원금: 0 원</p>
+                <p id="inflationAdjustedValuePessimistic">물가상승률 고려 현재 가치: 0 원</p>
+                <p id="profitPessimistic" class="profit">이득 금액: 0 원</p>
+            </div>
         </div>
 
-        <div class="category">
-            <h2>화, 목 교육반</h2>
-            <a href="https://us02web.zoom.us/j/87836846232?pwd=NENkR09LNzFJb0UxS3dObTFmUks1QT09" class="button">1반</a>
-            <a href="https://us02web.zoom.us/j/85226796949?pwd=VGE1ZnhjaTBtRExNb0czeTVXRG16UT09" class="button">2반</a>
-            <a href="https://us02web.zoom.us/j/88155514766?pwd=Zm5zdnVDaXdtdmJld3ZVSzNtZXRLUT09" class="button">3반</a>
-            <a href="https://us02web.zoom.us/j/81586829521?pwd=V2Jpak1kenA3NElSQTNoVzBZdjV5dz09" class="button">4반</a>
-            <a href="https://us02web.zoom.us/j/85308217819?pwd=NWNVaEp3S0Z1Vkx4R3JrcUROeUNodz09" class="button">5반</a>
+        <div class="explanation">
+            <h2>설명</h2>
+            <p><strong>시나리오 설명:</strong></p>
+            <ul>
+                <li><strong>낙관적인 경우:</strong> 연평균 수익률 12%, 물가상승률 1.5%</li>
+                <li><strong>평균인 경우:</strong> 연평균 수익률 10%, 물가상승률 2%</li>
+                <li><strong>비관적인 경우:</strong> 연평균 수익률 7%, 물가상승률 3%</li>
+            </ul>
+            <p><strong>기타사항:</strong></p>
+            <ul>
+                <li>초기 투자 수수료: 매월 투자 금액의 0.1%</li>
+                <li>배당금 수익률: 연간 1.5%, 분기별로 계산</li>
+                <li>배당금 세금: 배당금의 15%</li>
+                <li>재투자 수수료: 재투자 금액의 0.1%</li>
+                <li>이득 금액 산출 방법: 물가상승률 고려 현재 가치 - 투자 원금</li>
+            </ul>
+            <p>예를 들어, 700,000원을 매월 투자하는 경우 초기 투자 수수료로 700원이 차감되고, 나머지 금액이 투자됩니다. 매 분기마다 배당금이 계산되고 세금과 재투자 수수료가 차감된 후 재투자됩니다.</p>
         </div>
     </div>
 
+    <script>
+        let totalInvestmentValueOptimistic = 0;
+        let totalInvestmentValueAverage = 0;
+        let totalInvestmentValuePessimistic = 0;
+        let totalPrincipal = 0;
+        let currentMonth = 0;
+        const quarterlyDividendMonths = [3, 6, 9, 12];
+
+        const scenarios = {
+            optimistic: {
+                annualReturnRate: 0.12,
+                inflationRate: 0.015
+            },
+            average: {
+                annualReturnRate: 0.10,
+                inflationRate: 0.02
+            },
+            pessimistic: {
+                annualReturnRate: 0.07,
+                inflationRate: 0.03
+            }
+        };
+
+        function invest() {
+            const monthlyInvestment = parseInt(document.getElementById('monthlyInvestment').value);
+
+            if (isNaN(monthlyInvestment) || monthlyInvestment <= 0) {
+                alert('유효한 투자 금액을 입력해주세요.');
+                return;
+            }
+
+            currentMonth++;
+            const initialInvestment = monthlyInvestment * (1 - 0.001); // 초기 투자 수수료 0.1%
+            totalPrincipal += monthlyInvestment;
+
+            updateScenario('optimistic', initialInvestment);
+            updateScenario('average', initialInvestment);
+            updateScenario('pessimistic', initialInvestment);
+        }
+
+        function updateScenario(scenario, initialInvestment) {
+            const { annualReturnRate, inflationRate } = scenarios[scenario];
+
+            let totalInvestmentValue;
+            let resultElement;
+            let principalElement;
+            let inflationAdjustedElement;
+            let profitElement;
+
+            switch (scenario) {
+                case 'optimistic':
+                    totalInvestmentValueOptimistic += initialInvestment;
+                    totalInvestmentValueOptimistic *= (1 + (annualReturnRate / 12));
+                    totalInvestmentValue = totalInvestmentValueOptimistic;
+                    resultElement = document.getElementById('resultOptimistic');
+                    principalElement = document.getElementById('principalOptimistic');
+                    inflationAdjustedElement = document.getElementById('inflationAdjustedValueOptimistic');
+                    profitElement = document.getElementById('profitOptimistic');
+                    break;
+                case 'average':
+                    totalInvestmentValueAverage += initialInvestment;
+                    totalInvestmentValueAverage *= (1 + (annualReturnRate / 12));
+                    totalInvestmentValue = totalInvestmentValueAverage;
+                    resultElement = document.getElementById('resultAverage');
+                    principalElement = document.getElementById('principalAverage');
+                    inflationAdjustedElement = document.getElementById('inflationAdjustedValueAverage');
+                    profitElement = document.getElementById('profitAverage');
+                    break;
+                case 'pessimistic':
+                    totalInvestmentValuePessimistic += initialInvestment;
+                    totalInvestmentValuePessimistic *= (1 + (annualReturnRate / 12));
+                    totalInvestmentValue = totalInvestmentValuePessimistic;
+                    resultElement = document.getElementById('resultPessimistic');
+                    principalElement = document.getElementById('principalPessimistic');
+                    inflationAdjustedElement = document.getElementById('inflationAdjustedValuePessimistic');
+                    profitElement = document.getElementById('profitPessimistic');
+                    break;
+            }
+
+            if (quarterlyDividendMonths.includes(currentMonth % 12)) {
+                let dividend = totalInvestmentValue * (0.015 / 4); // 배당금 수익률 1.5%
+                let taxedDividend = dividend * (1 - 0.15); // 배당금 세율 15%
+                let reinvestedDividend = taxedDividend * (1 - 0.001); // 재투자 수수료 0.1%
+                totalInvestmentValue += reinvestedDividend;
+            }
+
+            // 물가상승률 고려 현재 가치 계산
+            const years = currentMonth / 12;
+            const inflationAdjustedValue = totalInvestmentValue / Math.pow(1 + inflationRate, years);
+            const profitValue = inflationAdjustedValue - totalPrincipal;
+
+            const roundedValue = Math.round(totalInvestmentValue);
+            const roundedPrincipal = Math.round(totalPrincipal);
+            const roundedInflationAdjustedValue = Math.round(inflationAdjustedValue);
+            const roundedProfitValue = Math.round(profitValue);
+
+            resultElement.innerText = `총 투자 가치: ${roundedValue.toLocaleString('ko-KR')} 원 (${currentMonth}개월째 투자 중)`;
+            principalElement.innerText = `투자 원금: ${roundedPrincipal.toLocaleString('ko-KR')} 원`;
+            inflationAdjustedElement.innerText = `물가상승률 고려 현재 가치: ${roundedInflationAdjustedValue.toLocaleString('ko-KR')} 원`;
+            profitElement.innerText = `이득 금액: ${roundedProfitValue.toLocaleString('ko-KR')} 원`;
+        }
+    </script>
 </body>
 </html>
