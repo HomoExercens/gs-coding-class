@@ -103,8 +103,27 @@
                 padding: 20px;
             }
             h1 {
-                font-size: 24px;
+                font-size: 28px;
                 margin-bottom: 20px;
+            }
+            button {
+                font-size: 16px;
+                padding: 14px;
+            }
+            h2, h3 {
+                font-size: 20px;
+            }
+            p {
+                font-size: 18px;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 24px;
+                margin-bottom: 15px;
             }
             button {
                 font-size: 14px;
@@ -114,26 +133,7 @@
                 font-size: 18px;
             }
             p {
-                font-size: 14px;
-            }
-        }
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-            h1 {
-                font-size: 20px;
-                margin-bottom: 15px;
-            }
-            button {
-                font-size: 12px;
-                padding: 10px;
-            }
-            h2, h3 {
                 font-size: 16px;
-            }
-            p {
-                font-size: 12px;
             }
         }
     </style>
@@ -143,7 +143,7 @@
         <h1>S&P 500 투자 시뮬레이터</h1>
         <label for="monthlyInvestment">이번 달 투자 금액 (원):</label>
         <input type="number" id="monthlyInvestment" value="700000"><br>
-        <button onclick="invest()">투자</button>
+        <button onclick="invest()" id="investButton">투자</button>
 
         <div class="result-section">
             <h2>결과</h2>
@@ -218,11 +218,6 @@
         function invest() {
             const monthlyInvestment = parseInt(document.getElementById('monthlyInvestment').value);
 
-            if (isNaN(monthlyInvestment) || monthlyInvestment <= 0) {
-                alert('유효한 투자 금액을 입력해주세요.');
-                return;
-            }
-
             currentMonth++;
             const initialInvestment = monthlyInvestment * (1 - 0.001); // 초기 투자 수수료 0.1%
             totalPrincipal += monthlyInvestment;
@@ -293,6 +288,14 @@
             inflationAdjustedElement.innerText = `물가상승률 고려 현재 가치: ${roundedInflationAdjustedValue.toLocaleString('ko-KR')} 원`;
             profitElement.innerText = `이득 금액: ${roundedProfitValue.toLocaleString('ko-KR')} 원`;
         }
+
+        // 'enter' 키 입력 시 투자 함수 호출
+        document.getElementById('monthlyInvestment').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.getElementById('investButton').click();
+            }
+        });
     </script>
 </body>
 </html>
