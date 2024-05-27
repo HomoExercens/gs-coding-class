@@ -8,6 +8,7 @@
             background-color: #f0f2f5;
             margin: 0;
             padding: 0;
+            font-size: 1.5em; /* 기본 폰트 크기를 1.5배로 설정 */
         }
         .container {
             max-width: 900px;
@@ -42,7 +43,7 @@
             color: white;
             border: none;
             border-radius: 4px;
-            font-size: 16px;
+            font-size: 1em;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -75,7 +76,7 @@
             border-left: 5px solid #f39c12;
         }
         p {
-            font-size: 16px;
+            font-size: 1em;
             margin: 10px 0;
         }
         .explanation {
@@ -103,18 +104,18 @@
                 padding: 20px;
             }
             h1 {
-                font-size: 28px;
+                font-size: 1.2em;
                 margin-bottom: 20px;
             }
             button {
-                font-size: 16px;
+                font-size: 0.8em;
                 padding: 14px;
             }
             h2, h3 {
-                font-size: 20px;
+                font-size: 1em;
             }
             p {
-                font-size: 18px;
+                font-size: 0.9em;
             }
         }
         @media (max-width: 480px) {
@@ -122,18 +123,18 @@
                 padding: 15px;
             }
             h1 {
-                font-size: 24px;
+                font-size: 1em;
                 margin-bottom: 15px;
             }
             button {
-                font-size: 14px;
+                font-size: 0.7em;
                 padding: 12px;
             }
             h2, h3 {
-                font-size: 18px;
+                font-size: 0.9em;
             }
             p {
-                font-size: 16px;
+                font-size: 0.8em;
             }
         }
     </style>
@@ -186,7 +187,7 @@
                 <li>배당금 수익률: 연간 1.5%, 분기별로 계산</li>
                 <li>배당금 세금: 배당금의 15%</li>
                 <li>재투자 수수료: 재투자 금액의 0.1%</li>
-                <li>이득 금액 산출 방법: 물가상승률 고려 현재 가치 - 투자 원금</li>
+                <li>이득 금액 산출 방법: (물가상승률 고려 현재 가치 - 투자 원금)</li>
             </ul>
             <p>예를 들어, 700,000원을 매월 투자하는 경우 초기 투자 수수료로 700원이 차감되고, 나머지 금액이 투자됩니다. 매 분기마다 배당금이 계산되고 세금과 재투자 수수료가 차감된 후 재투자됩니다.</p>
         </div>
@@ -198,7 +199,7 @@
         let totalInvestmentValuePessimistic = 0;
         let totalPrincipal = 0;
         let currentMonth = 0;
-        const quarterlyDividendMonths = [3, 6, 9, 12];
+        let dividendReinvestments = { optimistic: 0, average: 0, pessimistic: 0 };
 
         const scenarios = {
             optimistic: {
@@ -266,11 +267,14 @@
                     break;
             }
 
-            if (quarterlyDividendMonths.includes(currentMonth % 12)) {
+            if (currentMonth % 3 === 0) { // 매 3개월마다 배당금 반영
                 let dividend = totalInvestmentValue * (0.015 / 4); // 배당금 수익률 1.5%
                 let taxedDividend = dividend * (1 - 0.15); // 배당금 세율 15%
                 let reinvestedDividend = taxedDividend * (1 - 0.001); // 재투자 수수료 0.1%
                 totalInvestmentValue += reinvestedDividend;
+
+                // 배당금 재투자 횟수 증가
+                dividendReinvestments[scenario]++;
             }
 
             // 물가상승률 고려 현재 가치 계산
@@ -283,7 +287,7 @@
             const roundedInflationAdjustedValue = Math.round(inflationAdjustedValue);
             const roundedProfitValue = Math.round(profitValue);
 
-            resultElement.innerText = `총 투자 가치: ${roundedValue.toLocaleString('ko-KR')} 원 (${currentMonth}개월째 투자 중)`;
+            resultElement.innerText = `총 투자 가치: ${roundedValue.toLocaleString('ko-KR')} 원 (${currentMonth}개월째 투자 중, 배당금이 ${dividendReinvestments[scenario]}회 재투자되었습니다.)`;
             principalElement.innerText = `투자 원금: ${roundedPrincipal.toLocaleString('ko-KR')} 원`;
             inflationAdjustedElement.innerText = `물가상승률 고려 현재 가치: ${roundedInflationAdjustedValue.toLocaleString('ko-KR')} 원`;
             profitElement.innerText = `이득 금액: ${roundedProfitValue.toLocaleString('ko-KR')} 원`;
